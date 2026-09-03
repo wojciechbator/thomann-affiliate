@@ -1,0 +1,1021 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#070908">
+<meta name="description" content="Convert Thomann product links to Virya affiliate links. Paste, convert, open, and see a best-effort total cost summary.">
+<title>Thomann Affiliate Converter — Virya</title>
+<link rel="icon" href="data:,">
+<style>
+:root {
+  --virya-bg: #070908;
+  --virya-bg-raised: #0b100f;
+  --virya-surface: #101715;
+  --virya-surface-high: #16201d;
+  --virya-text: #eef4f1;
+  --virya-text-muted: #98a5a0;
+  --virya-border: #27322f;
+  --virya-signal: #84b4ac;
+  --virya-signal-hot: #93c6c0;
+  --virya-signal-deep: #26655d;
+  --virya-danger: #e73535;
+  --virya-success: #70db91;
+  --virya-warning: #f3c51a;
+  --virya-touch-min: 44px;
+  --virya-container: 48rem;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+body {
+  background: var(--virya-bg);
+  color: var(--virya-text);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+::selection {
+  background: var(--virya-signal);
+  color: #07100e;
+}
+
+a:focus-visible,
+button:focus-visible,
+textarea:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--virya-signal);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.container {
+  width: min(100%, var(--virya-container));
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+/* ── Header ─────────────────────────────────────────────────────── */
+
+.site-header {
+  padding-block: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 850;
+  line-height: 1.2;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--virya-signal-hot);
+}
+
+.heading {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.052em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  margin-top: 0.75rem;
+}
+
+.description {
+  max-width: 38rem;
+  margin-top: 1.25rem;
+  font-size: clamp(0.975rem, 1.4vw, 1.075rem);
+  line-height: 1.7;
+  text-wrap: pretty;
+  color: var(--virya-text-muted);
+}
+
+/* ── Main panel ─────────────────────────────────────────────────── */
+
+main {
+  flex: 1;
+  padding-bottom: 4rem;
+}
+
+.panel {
+  border: 1px solid var(--virya-border);
+  border-radius: 0.375rem;
+  background: color-mix(in srgb, var(--virya-surface) 88%, transparent);
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.field-label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 850;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--virya-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+textarea {
+  width: 100%;
+  min-height: 8rem;
+  border: 1px solid var(--virya-border);
+  border-radius: 0.375rem;
+  background: #050807;
+  color: var(--virya-text);
+  padding: 0.875rem 1rem;
+  font: 0.875rem/1.6 ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", monospace;
+  resize: vertical;
+  transition: border-color 160ms ease;
+}
+
+textarea:hover { border-color: #3a4744; }
+textarea:focus { outline: none; border-color: var(--virya-signal); }
+textarea::placeholder { color: #4a5853; }
+
+/* ── Buttons ────────────────────────────────────────────────────── */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-top: 1.25rem;
+  align-items: center;
+}
+
+.btn {
+  display: inline-flex;
+  min-height: var(--virya-touch-min);
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.125rem;
+  padding-inline: 1.125rem;
+  font-size: 0.6875rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  cursor: pointer;
+  border: none;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease,
+    opacity 150ms ease;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn--primary {
+  background: var(--virya-signal-hot);
+  color: #07100e;
+}
+.btn--primary:hover { background: #bddbd5; }
+
+.btn--secondary {
+  border: 1px solid #3f3f46;
+  color: #e4e4e7;
+  background: transparent;
+}
+.btn--secondary:hover {
+  border-color: var(--virya-signal);
+  color: var(--virya-signal-hot);
+}
+
+.btn--ghost {
+  padding-inline: 0.5rem;
+  color: #a1a1aa;
+  background: transparent;
+}
+.btn--ghost:hover { color: var(--virya-signal-hot); }
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+  transform: none;
+}
+.btn:disabled:hover {
+  background: var(--virya-signal-hot);
+  color: #07100e;
+  transform: none;
+}
+.btn--secondary:disabled:hover,
+.btn--ghost:disabled:hover {
+  background: transparent;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+/* ── Status ─────────────────────────────────────────────────────── */
+
+.status {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--virya-text-muted);
+  min-height: 1.4em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--virya-border);
+  border-top-color: var(--virya-signal);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Results ───────────────────────────────────────────────────── */
+
+.results {
+  margin-top: 1.5rem;
+}
+
+.results-title {
+  font-size: 0.6875rem;
+  font-weight: 850;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--virya-text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--virya-border);
+}
+.result-row:last-child { border-bottom: none; }
+
+@media (min-width: 640px) {
+  .result-row {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+  }
+}
+
+.result-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.result-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--virya-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result-price {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--virya-signal-hot);
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.15rem;
+}
+
+.result-error {
+  font-size: 0.75rem;
+  color: var(--virya-danger);
+  margin-top: 0.15rem;
+}
+
+.result-status {
+  font-size: 0.75rem;
+  color: var(--virya-text-muted);
+  margin-top: 0.15rem;
+}
+
+.result-url-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .result-url-row { width: auto; flex: 0 0 auto; }
+}
+
+.result-url {
+  flex: 1;
+  min-width: 0;
+  background: #050807;
+  border: 1px solid var(--virya-border);
+  border-radius: 0.25rem;
+  color: var(--virya-text-muted);
+  padding: 0.5rem 0.625rem;
+  font: 0.75rem/1.4 ui-monospace, "SF Mono", "Cascadia Code", monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-mini {
+  flex-shrink: 0;
+  min-height: 2.25rem;
+  padding: 0 0.75rem;
+  font-size: 0.625rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--virya-border);
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--virya-text-muted);
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+.btn-mini:hover {
+  border-color: var(--virya-signal);
+  color: var(--virya-signal-hot);
+}
+
+/* ── Total bar ──────────────────────────────────────────────────── */
+
+.total-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-top: 2px solid var(--virya-border);
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.total-bar .total-amount {
+  font-variant-numeric: tabular-nums;
+  color: var(--virya-signal-hot);
+}
+
+.total-bar .total-hint {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--virya-text-muted);
+  margin-left: 0.5rem;
+}
+
+/* ── Empty state ────────────────────────────────────────────────── */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  gap: 0.5rem;
+  color: var(--virya-text-muted);
+}
+
+.empty-state svg {
+  opacity: 0.4;
+  margin-bottom: 0.25rem;
+}
+
+.empty-state-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--virya-text);
+}
+
+.empty-state-hint {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  max-width: 20rem;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────── */
+
+.site-footer {
+  border-top: 1px solid var(--virya-border);
+  padding-block: 2rem;
+  margin-top: auto;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.footer-brand {
+  font-size: 0.6875rem;
+  font-weight: 850;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--virya-signal-hot);
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-links a {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--virya-text-muted);
+  text-decoration: none;
+  transition: color 150ms ease;
+  min-height: var(--virya-touch-min);
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-links a:hover { color: var(--virya-signal-hot); }
+
+.footer-disclaimer {
+  font-size: 0.7rem;
+  color: #4a5853;
+  max-width: 32rem;
+  line-height: 1.5;
+}
+
+/* ── Toast ─────────────────────────────────────────────────────── */
+
+.toast-container {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--virya-border);
+  background: var(--virya-surface-high);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  pointer-events: auto;
+  animation: toastIn 0.2s ease;
+  max-width: 22rem;
+}
+
+.toast--success { border-color: rgba(112,219,145,0.3); }
+.toast--error { border-color: rgba(231,53,53,0.3); }
+.toast--info { border-color: var(--virya-border); }
+
+.toast-icon { font-size: 0.9rem; flex-shrink: 0; }
+.toast--success .toast-icon { color: var(--virya-success); }
+.toast--error .toast-icon { color: var(--virya-danger); }
+.toast--info .toast-icon { color: var(--virya-text-muted); }
+
+.toast-text { flex: 1; font-size: 0.8rem; line-height: 1.4; }
+
+.toast-close {
+  background: none;
+  border: 0;
+  color: var(--virya-text-muted);
+  cursor: pointer;
+  padding: 0 0.25rem;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <p class="eyebrow">Virya // Thomann</p>
+    <h1 class="heading">Affiliate Link Converter</h1>
+    <p class="description">
+      Paste Thomann product links below, convert them to Virya affiliate links, and open them in your browser.
+      You support the band at no extra cost — the store price stays the same.
+    </p>
+    <div style="margin-top: 1.25rem;">
+      <a class="btn btn--secondary" href="https://www.thomann.pl/?offid=1&affid=4979&subid=virya_music&subid2=converter" target="_blank" rel="sponsored noopener noreferrer">
+        Browse Thomann <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <section class="panel" aria-label="Link converter">
+      <label class="field-label" for="links">Thomann product links (one per line)</label>
+      <textarea id="links" placeholder="https://www.thomann.de/de/shure_sm7b_vocal_mikrofon.htm&#10;https://www.thomann.pl/roland_tm_2_trigger_module.htm&#10;https://www.thomann.de/de/rode_nt1_5th_gen.htm" autocomplete="off" spellcheck="false"></textarea>
+
+      <div class="actions">
+        <button class="btn btn--primary" id="convert" type="button" disabled>Convert to affiliate links</button>
+        <button class="btn btn--secondary" id="open-all" type="button" disabled>Open all links</button>
+        <button class="btn btn--ghost" id="copy-all" type="button" disabled>Copy all</button>
+        <button class="btn btn--ghost" id="clear" type="button" disabled>Clear</button>
+      </div>
+
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="results" id="results" aria-live="polite"></section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <p class="footer-brand">Virya</p>
+      <nav class="footer-links" aria-label="Virya links">
+        <a href="https://www.virya.music/" target="_blank" rel="noopener noreferrer">virya.music ↗</a>
+        <a href="https://www.virya.music/signal/" target="_blank" rel="noopener noreferrer">Signal app ↗</a>
+        <a href="https://www.virya.music/gear/" target="_blank" rel="noopener noreferrer">Our gear ↗</a>
+      </nav>
+      <p class="footer-disclaimer">
+        Affiliate links — Virya may earn a commission on qualifying purchases. The store price is not affected.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container" id="toast-container" role="region" aria-label="Notifications" aria-live="polite"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  // ── Affiliate configuration (public, same as virya/src/lib/thomann.ts) ──
+  const AFFILIATE_PARAMS = [
+    ["offid", "1"],
+    ["affid", "4979"],
+    ["subid", "virya_music"],
+    ["subid2", "converter"],
+  ];
+  const AFFILIATE_KEYS = new Set(["offid", "affid", "subid", "subid2"]);
+  const ALLOWED_HOSTS = new Set([
+    "thomann.pl",
+    "www.thomann.pl",
+    "thomann.de",
+    "www.thomann.de",
+  ]);
+
+  // ── DOM ──────────────────────────────────────────────────────────
+  const $ = (id) => document.getElementById(id);
+  const textarea = $("links");
+  const convertBtn = $("convert");
+  const openAllBtn = $("open-all");
+  const copyAllBtn = $("copy-all");
+  const clearBtn = $("clear");
+  const statusEl = $("status");
+  const resultsEl = $("results");
+  const toastContainer = $("toast-container");
+
+  let convertedItems = [];
+
+  // ── Toast notifications ──────────────────────────────────────────
+  let toastId = 0;
+  function toastDismiss(id) {
+    const el = toastContainer.querySelector(`[data-toast-id="${id}"]`);
+    if (el) { el.style.opacity = "0"; setTimeout(() => el.remove(), 200); }
+  }
+  function toastPush(kind, text, duration = 4000) {
+    const id = ++toastId;
+    const icon = kind === "success" ? "\u2713" : kind === "error" ? "\u2715" : "\u2139";
+    const el = document.createElement("div");
+    el.className = `toast toast--${kind}`;
+    el.dataset.toastId = id;
+    el.innerHTML = `<span class="toast-icon" aria-hidden="true">${icon}</span><span class="toast-text"></span><button class="toast-close" type="button" aria-label="Dismiss">\u2715</button>`;
+    el.querySelector(".toast-text").textContent = text;
+    el.querySelector(".toast-close").onclick = () => toastDismiss(id);
+    toastContainer.appendChild(el);
+    if (duration > 0) setTimeout(() => toastDismiss(id), duration);
+  }
+  const toast = {
+    success: (t) => toastPush("success", t),
+    error: (t, d) => toastPush("error", t, d ?? 6000),
+    info: (t) => toastPush("info", t),
+  };
+
+  // ── Clipboard helpers ─────────────────────────────────────────────
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch { ok = false; }
+      document.body.removeChild(ta);
+      return ok;
+    }
+  }
+
+  // ── Affiliate link conversion ────────────────────────────────────
+  function toAffiliateLink(raw) {
+    let url;
+    try {
+      url = new URL(raw.trim());
+    } catch {
+      return { error: "invalid URL" };
+    }
+
+    const host = url.hostname.toLowerCase();
+    if (!ALLOWED_HOSTS.has(host)) {
+      return { error: `not a Thomann domain (${host})` };
+    }
+
+    // Force https
+    url.protocol = "https:";
+
+    // Strip existing affiliate params
+    const params = new URLSearchParams(url.search);
+    for (const key of [...params.keys()]) {
+      if (AFFILIATE_KEYS.has(key.toLowerCase())) {
+        params.delete(key);
+      }
+    }
+
+    // Append affiliate params
+    for (const [k, v] of AFFILIATE_PARAMS) {
+      params.set(k, v);
+    }
+
+    url.search = params.toString();
+    return { url: url.toString() };
+  }
+
+  // ── Price extraction (best-effort client-side) ───────────────────
+  async function tryExtractPrice(affiliateUrl) {
+    try {
+      const resp = await fetch(affiliateUrl, { mode: "cors", credentials: "omit" });
+      if (!resp.ok) return null;
+      const html = await resp.text();
+      const truncated = html.length > 524288 ? html.slice(0, 524288) : html;
+
+      const price = extractPrice(truncated);
+      const currency = extractCurrency(truncated);
+      const title = extractTitle(truncated);
+
+      return { price, currency, title };
+    } catch {
+      return null;
+    }
+  }
+
+  function extractPrice(html) {
+    // JSON-LD
+    let m = html.match(/"price"\s*:\s*"?(\d+[.,]?\d*)"?/);
+    if (m) return normalizePrice(m[1]);
+    // meta itemprop
+    m = html.match(/<meta\s+itemprop=["']price["']\s+content=["'](\d+[.,]?\d*)["']/i);
+    if (m) return normalizePrice(m[1]);
+    // Thomann-specific
+    m = html.match(/(?:class="[^"]*price[^"]*"[^>]*>|data-price=")(\d[\d.]*(?:,\d+)?)/);
+    if (m) return normalizePrice(m[1]);
+    return null;
+  }
+
+  function extractCurrency(html) {
+    const m = html.match(/[\u20ac$£]|EUR|USD|GBP|PLN/);
+    if (!m) return null;
+    const s = m[0];
+    if (s === "\u20ac" || s === "EUR") return "EUR";
+    if (s === "$" || s === "USD") return "USD";
+    if (s === "£" || s === "GBP") return "GBP";
+    if (s === "PLN") return "PLN";
+    return s;
+  }
+
+  function extractTitle(html) {
+    const m = html.match(/<title>(.*?)<\/title>/i);
+    if (!m) return null;
+    const title = m[1].trim();
+    const stripped = title.split(" \u2013 ")[0].trim();
+    return stripped || null;
+  }
+
+  function normalizePrice(raw) {
+    const trimmed = raw.trim();
+    if (trimmed.includes(".") && trimmed.includes(",")) {
+      return trimmed.replace(/\./g, "").replace(",", ".");
+    }
+    if (trimmed.includes(",")) {
+      return trimmed.replace(",", ".");
+    }
+    return trimmed;
+  }
+
+  function parsePriceValue(raw) {
+    if (!raw) return null;
+    const n = parseFloat(normalizePrice(raw));
+    return isNaN(n) ? null : n;
+  }
+
+  function formatPrice(amount) {
+    const n = parseFloat(amount);
+    if (isNaN(n)) return amount;
+    return n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  // ── Empty state ──────────────────────────────────────────────────
+  function renderEmptyState() {
+    return `<div class="empty-state">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/><path d="M8 12h8"/>
+      </svg>
+      <strong class="empty-state-label">No links yet</strong>
+      <p class="empty-state-hint">Paste Thomann product links above and click Convert.</p>
+    </div>`;
+  }
+
+  // ── Render results ───────────────────────────────────────────────
+  function renderResults() {
+    if (convertedItems.length === 0) {
+      resultsEl.innerHTML = "";
+      return;
+    }
+
+    let html = '<p class="results-title">Converted links</p>';
+
+    let total = 0;
+    let currency = null;
+    let pricedCount = 0;
+
+    for (const item of convertedItems) {
+      const title = item.title || item.originalUrl.split("/").pop()?.replace(/\.htm$/, "").replace(/_/g, " ") || "\u2014";
+      const safeTitle = escapeHtml(title);
+      const safeUrl = escapeHtml(item.affiliateUrl);
+      const shortUrl = item.affiliateUrl.length > 70 ? item.affiliateUrl.slice(0, 67) + "\u2026" : item.affiliateUrl;
+      const safeShortUrl = escapeHtml(shortUrl);
+
+      let priceHtml = "";
+      if (item.price) {
+        priceHtml = `<div class="result-price">${formatPrice(item.price)} ${item.currency || ""}</div>`;
+        const val = parsePriceValue(item.price);
+        if (val !== null) {
+          total += val;
+          pricedCount++;
+          if (!currency) currency = item.currency;
+        }
+      } else if (item.error) {
+        priceHtml = `<div class="result-error">${escapeHtml(item.error)}</div>`;
+      } else {
+        priceHtml = `<div class="result-status">price unavailable</div>`;
+      }
+
+      const statusIcon = item.error
+        ? `<span style="color:var(--virya-danger)" aria-label="error">\u2715</span>`
+        : `<span style="color:var(--virya-success)" aria-label="ok">\u2713</span>`;
+
+      html += `<div class="result-row">
+        <div class="result-meta">
+          <div class="result-title">${safeTitle} ${statusIcon}</div>
+          ${priceHtml}
+        </div>
+        <div class="result-url-row">
+          <input class="result-url" type="text" readonly value="${safeUrl}" title="${safeUrl}" aria-label="Affiliate link for ${safeTitle}">
+          <button class="btn-mini copy-single" data-url="${safeUrl}" type="button">Copy</button>
+        </div>
+      </div>`;
+    }
+
+    // Total bar (only if at least one price was extracted)
+    if (pricedCount > 0) {
+      html += `<div class="total-bar">
+        <span>Total (${pricedCount} ${pricedCount === 1 ? "item" : "items"} priced${pricedCount < convertedItems.length ? ` of ${convertedItems.length}` : ""})</span>
+        <span><span class="total-amount">${formatPrice(total.toFixed(2))}</span> ${currency || ""}<span class="total-hint">${pricedCount < convertedItems.length ? "partial" : ""}</span></span>
+      </div>`;
+    }
+
+    resultsEl.innerHTML = html;
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  // ── Button state ─────────────────────────────────────────────────
+  function updateButtonStates() {
+    const hasText = textarea.value.trim().length > 0;
+    convertBtn.disabled = !hasText;
+    clearBtn.disabled = !hasText;
+    // open-all and copy-all stay disabled until conversion completes
+    if (!hasText) {
+      openAllBtn.disabled = true;
+      copyAllBtn.disabled = true;
+    }
+  }
+
+  textarea.addEventListener("input", updateButtonStates);
+
+  // ── Convert handler ───────────────────────────────────────────────
+  convertBtn.addEventListener("click", async () => {
+    const raw = textarea.value.trim();
+    if (!raw) return;
+
+    const lines = raw.split("\n").map((s) => s.trim()).filter(Boolean);
+
+    // Deduplicate
+    const seen = new Set();
+    const unique = [];
+    let dupes = 0;
+    for (const line of lines) {
+      if (seen.has(line)) { dupes++; continue; }
+      seen.add(line);
+      unique.push(line);
+    }
+
+    convertBtn.disabled = true;
+    openAllBtn.disabled = true;
+    copyAllBtn.disabled = true;
+    clearBtn.disabled = true;
+    resultsEl.innerHTML = "";
+    statusEl.innerHTML = `<span class="spinner"></span> Converting ${unique.length} link${unique.length === 1 ? "" : "s"}\u2026`;
+
+    // Step 1: Convert all links (synchronous, instant)
+    convertedItems = unique.map((rawUrl) => {
+      const result = toAffiliateLink(rawUrl);
+      if (result.error) {
+        return { originalUrl: rawUrl, affiliateUrl: rawUrl, title: null, price: null, currency: null, error: result.error };
+      }
+      return { originalUrl: rawUrl, affiliateUrl: result.url, title: null, price: null, currency: null, error: null };
+    });
+
+    // Render immediately with affiliate links (no prices yet)
+    renderResults();
+
+    const okCount = convertedItems.filter((i) => !i.error).length;
+    const errCount = convertedItems.filter((i) => i.error).length;
+
+    if (okCount === 0) {
+      statusEl.textContent = `0 links converted${errCount > 0 ? ` (${errCount} invalid)` : ""}.`;
+      convertBtn.disabled = false;
+      clearBtn.disabled = false;
+      if (errCount > 0) toast.error(`No valid Thomann links found (${errCount} rejected).`);
+      return;
+    }
+
+    // Enable open-all and copy-all now that we have affiliate links
+    openAllBtn.disabled = false;
+    copyAllBtn.disabled = false;
+    convertBtn.disabled = false;
+    clearBtn.disabled = false;
+
+    if (dupes > 0) {
+      toast.info(`${dupes} duplicate link${dupes === 1 ? "" : "s"} removed.`);
+    }
+
+    // Step 2: Best-effort price extraction (async, may fail silently)
+    statusEl.innerHTML = `<span class="spinner"></span> Checking prices (best-effort)\u2026`;
+
+    let pricedCount = 0;
+    for (const item of convertedItems) {
+      if (item.error) continue;
+      const extracted = await tryExtractPrice(item.affiliateUrl);
+      if (extracted) {
+        item.title = extracted.title;
+        item.price = extracted.price;
+        item.currency = extracted.currency;
+        if (extracted.price) pricedCount++;
+      }
+      // Re-render after each extraction so prices appear progressively
+      renderResults();
+    }
+
+    if (pricedCount > 0) {
+      statusEl.textContent = `${okCount} link${okCount === 1 ? "" : "s"} converted, ${pricedCount} priced.`;
+    } else {
+      statusEl.textContent = `${okCount} link${okCount === 1 ? "" : "s"} converted. Prices unavailable (Thomann blocks cross-origin requests).`;
+    }
+  });
+
+  // ── Open all handler ──────────────────────────────────────────────
+  openAllBtn.addEventListener("click", () => {
+    const okItems = convertedItems.filter((i) => !i.error);
+    if (okItems.length === 0) return;
+
+    let opened = 0;
+    for (const item of okItems) {
+      const win = window.open(item.affiliateUrl, "_blank", "noopener,noreferrer");
+      if (win) {
+        opened++;
+      } else {
+        break;
+      }
+    }
+
+    if (opened < okItems.length) {
+      toast.error("Popup blocked. Allow popups for this page to open all links, or use Copy all.");
+    } else {
+      toast.success(`Opened ${opened} link${opened === 1 ? "" : "s"}.`);
+    }
+  });
+
+  // ── Copy all handler ──────────────────────────────────────────────
+  copyAllBtn.addEventListener("click", async () => {
+    const okItems = convertedItems.filter((i) => !i.error);
+    if (okItems.length === 0) return;
+
+    const text = okItems.map((i) => i.affiliateUrl).join("\n");
+    const ok = await copyText(text);
+    if (ok) {
+      toast.success(`Copied ${okItems.length} link${okItems.length === 1 ? "" : "s"}.`);
+    } else {
+      toast.error("Failed to copy to clipboard.");
+    }
+  });
+
+  // ── Clear handler ────────────────────────────────────────────────
+  clearBtn.addEventListener("click", () => {
+    textarea.value = "";
+    convertedItems = [];
+    resultsEl.innerHTML = "";
+    statusEl.textContent = "";
+    updateButtonStates();
+    textarea.focus();
+  });
+
+  // ── Per-link copy (delegated) ─────────────────────────────────────
+  document.addEventListener("click", async (e) => {
+    const btn = e.target.closest(".copy-single");
+    if (!btn) return;
+    const url = btn.dataset.url;
+    const ok = await copyText(url);
+    if (ok) {
+      btn.textContent = "Copied";
+      toast.success("Link copied.");
+      setTimeout(() => { btn.textContent = "Copy"; }, 2000);
+    } else {
+      toast.error("Failed to copy.");
+    }
+  });
+
+  // ── Keyboard shortcut: Ctrl/Cmd+Enter to convert ─────────────────
+  textarea.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+      e.preventDefault();
+      if (!convertBtn.disabled) convertBtn.click();
+    }
+  });
+
+  // ── Init ──────────────────────────────────────────────────────────
+  updateButtonStates();
+})();
+</script>
+
+</body>
+</html>
